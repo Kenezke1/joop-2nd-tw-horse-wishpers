@@ -1,6 +1,6 @@
 package codecool;
 
-public class Horses{
+public class Horses {
     static int horseCounter = 0;
     String name;
     int maxSpeed;

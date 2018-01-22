@@ -1,8 +1,12 @@
 package codecool;
 import codecool.Horses;
-import java.util.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.IOException;
 
 public class Main{
     private static final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
@@ -12,18 +16,52 @@ public class Main{
         
         return horses;
     }
+    public Horses[] HorseReading(String CSVPath) throws FileNotFoundException{
+
+        String line = null;
+        int numLines = 0;
+        try(BufferedReader readhorses = new BufferedReader(new FileReader(CSVPath))){
+            while(readhorses.readLine() != null ){
+                numLines++;
+            }
+            readhorses.close();
+
+        }catch(IOException e){
+            e.printStackTrace();
+
+
+        }
+        try(BufferedReader readhorses = new BufferedReader(new FileReader(CSVPath))){
+            int count = 0;
+            horses = new Horses[numLines];
+            while((line = readhorses.readLine()) != null){
+                String[] attributes = line.split(",");
+                horses[count] = new Horses(attributes[0], Integer.parseInt(attributes[1]),Integer.parseInt(attributes[2]),Integer.parseInt(attributes[3]),Integer.parseInt(attributes[4]));
+                count++;
+
+            }
+            readhorses.close();
+            
+        }catch(IOException i){
+            i.printStackTrace();
+        }
+        return horses;
+        
+
+
+    }
 
 public static void main(String[] args){
-    Horses horse1 = new Horses("Flash", 50, 5, 2000, 40);
-    Horses horse2 = new Horses("Kincsem", 49, 4, 2000, 37);
-    Horses horse3 = new Horses("Overdose", 53, 6, 4000, 33);
-    Horses horse4 = new Horses("Ló", 47, 4, 1900, 36);
-    Horses horse5 = new Horses("Bajnok", 47, 5, 2300, 37);
-    Horses horse6 = new Horses("Matilda", 46, 5, 2200, 36);
-    Horses horse7 = new Horses("Akaba", 45, 4, 2300, 35);
-    Horses horse8 = new Horses("Táltos", 48, 4, 2100, 37);
-    Horses horse9 = new Horses("Ráró", 49, 5, 1900, 42);
-    Horses horse10 = new Horses("Démon", 50, 7, 2200, 40);
+    Main x = new Main();
+    Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
+    try {
+        x.HorseReading("/home/kenez/Java files/joop-2nd-tw-horse-wishpers/src/codecool/horses.csv");
+    } catch(FileNotFoundException z){
+        z.printStackTrace();
+    }
+    System.out.println(x.horses.length);
+
+    System.out.println(Horses.horseCounter);
 
     System.out.println(sdf.format(timeStamp));
     
