@@ -11,6 +11,7 @@ import java.io.IOException;
 public class Main{
     private static final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
     Horses[] horses = new Horses[Horses.horseCounter];
+    Jockey[] jockeys = new Jockey[Jockey.jockeyCounter];
 
     public Horses[] generateSimulation(int round){
         
@@ -50,6 +51,41 @@ public class Main{
 
 
     }
+
+    public Jockey[] JockeyReading(String CSVPath) throws FileNotFoundException{
+        
+                String line = null;
+                int numLines = 0;
+                try(BufferedReader readjockeys = new BufferedReader(new FileReader(CSVPath))){
+                    while(readjockeys.readLine() != null ){
+                        numLines++;
+                    }
+                    readjockeys.close();
+        
+                }catch(IOException e){
+                    e.printStackTrace();
+        
+        
+                }
+                try(BufferedReader readjockeys = new BufferedReader(new FileReader(CSVPath))){
+                    int count = 0;
+                    jockeys = new Jockey[numLines];
+                    while((line = readjockeys.readLine()) != null){
+                        String[] attributes = line.split(",");
+                        jockeys[count] = new Jockey(attributes[0], Integer.parseInt(attributes[1]));
+                        count++;
+        
+                    }
+                    readjockeys.close();
+                    
+                }catch(IOException i){
+                    i.printStackTrace();
+                }
+                return jockeys;
+                
+        
+        
+            }
 
 public static void main(String[] args){
     Main x = new Main();
